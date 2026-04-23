@@ -56,7 +56,7 @@ export default function LoginPage() {
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <Box component="img" src="/logo_finito.png" alt="Finito" sx={{ width: 64, height: 64, objectFit: 'contain', mb: 2 }} />
           <Typography variant="h4" fontWeight={700} gutterBottom>
-            Bem-vindo de volta
+            Bem-vindo ao Finito APP
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Entre na sua conta para continuar

@@ -48,44 +48,31 @@ function CurrencyInput({ value, onChange, error, helperText }: CurrencyInputProp
     maximumFractionDigits: 2,
   })
 
+  const update = (next: number) => {
+    setCents(next)
+    isInternal.current = true
+    onChange(next / 100)
+  }
+
+  // Desktop: keydown fires reliably and allows blocking native insertion
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace') {
       e.preventDefault()
-      const next = Math.floor(cents / 10)
-      setCents(next)
-      isInternal.current = true
-      onChange(next / 100)
+      update(Math.floor(cents / 10))
     } else if (/^\d$/.test(e.key)) {
       e.preventDefault()
       const next = cents * 10 + parseInt(e.key, 10)
-      if (next > 99_999_999) return // max R$ 999.999,99
-      setCents(next)
-      isInternal.current = true
-      onChange(next / 100)
+      if (next <= 99_999_999) update(next)
     }
   }
 
-  // Mobile virtual keyboards don't reliably fire keydown events.
-  // beforeinput is cancelable and works on modern mobile browsers.
-  const handleBeforeInput = (e: React.FormEvent<HTMLInputElement>) => {
-    const ie = e.nativeEvent as InputEvent
-    e.preventDefault()
-
-    if (ie.inputType === 'deleteContentBackward' || ie.inputType === 'deleteWordBackward') {
-      const next = Math.floor(cents / 10)
-      setCents(next)
-      isInternal.current = true
-      onChange(next / 100)
-    } else if (ie.data && /^\d+$/.test(ie.data)) {
-      let next = cents
-      for (const ch of ie.data) {
-        next = next * 10 + parseInt(ch, 10)
-        if (next > 99_999_999) return
-      }
-      setCents(next)
-      isInternal.current = true
-      onChange(next / 100)
-    }
+  // Mobile: virtual keyboards don't reliably fire keydown, so the browser
+  // inserts text and onChange fires. Extract only digits from whatever was inserted.
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, '')
+    if (!digits) { update(0); return }
+    const next = Math.min(parseInt(digits, 10), 99_999_999)
+    update(next)
   }
 
   return (
@@ -94,9 +81,8 @@ function CurrencyInput({ value, onChange, error, helperText }: CurrencyInputProp
         label="Valor"
         fullWidth
         value={display}
-        onChange={() => undefined} // fully controlled via keydown / beforeinput
+        onChange={handleChange}
         onKeyDown={handleKeyDown}
-        onBeforeInput={handleBeforeInput}
         inputMode="numeric"
         InputProps={{
           startAdornment: <InputAdornment position="start">R$</InputAdornment>,

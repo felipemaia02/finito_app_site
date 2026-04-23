@@ -18,7 +18,7 @@ import {
 import { EXPENSE_CATEGORIES } from '@/constants/categories'
 import { EXPENSE_TYPES } from '@/constants/expenseTypes'
 import type { ExpenseCreate, ExpenseResponse } from '@/types/expenses'
-import type { UserResponse } from '@/types/users'
+import type { GroupMemberResponse } from '@/types/groups'
 import { fromCents, toCents } from '@/utils/currency'
 import { toISODate } from '@/utils/dates'
 
@@ -107,7 +107,7 @@ type FormValues = z.infer<typeof schema>
 interface ExpenseFormProps {
   defaultGroupId?: string
   initialValues?: ExpenseResponse
-  groupUsers?: UserResponse[]
+  groupUsers?: GroupMemberResponse[]
   onSubmit: (data: ExpenseCreate) => Promise<void>
   isLoading?: boolean
   submitLabel?: string

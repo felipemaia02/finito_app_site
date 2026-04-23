@@ -4,7 +4,7 @@ import { useSnackbar } from 'notistack'
 import { ExpenseForm } from './ExpenseForm'
 import { useCreateExpense } from '@/hooks/useExpenses'
 import { useGroup } from '@/hooks/useGroup'
-import { useGroupDetail } from '@/hooks/useGroups'
+import { useGroupFromCache } from '@/hooks/useGroups'
 import type { ExpenseCreate } from '@/types/expenses'
 
 interface CreateExpenseModalProps {
@@ -16,7 +16,7 @@ interface CreateExpenseModalProps {
 export function CreateExpenseModal({ open, onClose, onSuccess }: CreateExpenseModalProps) {
   const { enqueueSnackbar } = useSnackbar()
   const { activeGroupId } = useGroup()
-  const { data: group } = useGroupDetail(open ? activeGroupId : null)
+  const { data: group } = useGroupFromCache(open ? activeGroupId : null)
   const createMutation = useCreateExpense()
 
   const handleSubmit = async (data: ExpenseCreate) => {

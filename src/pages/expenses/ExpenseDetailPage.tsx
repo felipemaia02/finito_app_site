@@ -142,14 +142,6 @@ export default function ExpenseDetailPage() {
                       {getExpenseTypeIcon(expense.type_expense)} {getExpenseTypeLabel(expense.type_expense)}
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="caption" color="text.secondary" fontWeight={600} textTransform="uppercase" letterSpacing={0.5}>
-                      Group ID
-                    </Typography>
-                    <Typography variant="body2" fontWeight={500} mt={0.5} sx={{ wordBreak: 'break-all', fontFamily: 'monospace' }}>
-                      {expense.group_id}
-                    </Typography>
-                  </Grid>
                   {expense.note && (
                     <Grid item xs={12}>
                       <Typography variant="caption" color="text.secondary" fontWeight={600} textTransform="uppercase" letterSpacing={0.5}>
@@ -173,7 +165,7 @@ export default function ExpenseDetailPage() {
                   Metadados
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
                   <Box>
                     <Typography variant="caption" color="text.secondary" fontWeight={600} textTransform="uppercase">
                       ID da despesa
@@ -198,12 +190,14 @@ export default function ExpenseDetailPage() {
                     <Typography variant="caption" color="text.secondary" fontWeight={600} textTransform="uppercase">
                       Status
                     </Typography>
-                    <Chip
-                      label={expense.is_deleted ? 'Excluído' : 'Ativo'}
-                      size="small"
-                      color={expense.is_deleted ? 'error' : 'success'}
-                      sx={{ mt: 0.5, borderRadius: 2 }}
-                    />
+                    <Box sx={{ mt: 0.75 }}>
+                      <Chip
+                        label={expense.is_deleted ? 'Excluído' : 'Ativo'}
+                        size="small"
+                        color={expense.is_deleted ? 'error' : 'success'}
+                        sx={{ borderRadius: 2 }}
+                      />
+                    </Box>
                   </Box>
                 </Box>
               </CardContent>

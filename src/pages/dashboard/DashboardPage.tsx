@@ -48,7 +48,10 @@ export default function DashboardPage() {
   const { data: allGroups = [] } = useMyGroups()
   const [deleteTarget, setDeleteTarget] = useState<ExpenseResponse | null>(null)
   const [periodFilter, setPeriodFilter] = useState<string>(CURRENT_MONTH)
+  const [userFilter, setUserFilter] = useState<string>('')
   const [createOpen, setCreateOpen] = useState(false)
+
+  const activeGroup = allGroups.find((g) => g.id === activeGroupId)
 
   const {
     data: expenses = [],
@@ -59,10 +62,11 @@ export default function DashboardPage() {
 
   const deleteMutation = useDeleteExpense(activeGroupId ?? '')
 
-  // Filter expenses by period
+  // Filter expenses by period and user
   const filteredExpenses = expenses.filter((e) => {
-    if (!periodFilter) return true
-    return e.date.startsWith(periodFilter)
+    if (periodFilter && !e.date.startsWith(periodFilter)) return false
+    if (userFilter && e.spent_by !== userFilter) return false
+    return true
   })
 
   const summary = computeDashboardSummaryFromExpenses(filteredExpenses)
@@ -177,6 +181,24 @@ export default function DashboardPage() {
               ))}
             </Select>
           </FormControl>
+
+          {/* User filter */}
+          {activeGroup && activeGroup.users.length > 1 && (
+            <FormControl size="small" sx={{ minWidth: 160 }}>
+              <InputLabel>Membro</InputLabel>
+              <Select
+                value={userFilter}
+                label="Membro"
+                onChange={(e) => setUserFilter(e.target.value)}
+                sx={{ borderRadius: 2 }}
+              >
+                <MenuItem value="">Todos</MenuItem>
+                {activeGroup.users.map((u) => (
+                  <MenuItem key={u.id} value={u.name}>{u.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
 
           <Tooltip title="Atualizar dados">
             <IconButton onClick={() => void refetch()} size="small">

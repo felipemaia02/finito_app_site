@@ -169,9 +169,7 @@ export default function GroupsPage() {
                       <Chip label="Ativo" size="small" color="primary" icon={<Check />} />
                     )}
                   </Box>
-                  <Typography variant="caption" color="text.disabled" sx={{ fontFamily: 'monospace' }}>
-                    {group.id}
-                  </Typography>
+
                 </CardContent>
               </CardActionArea>
 

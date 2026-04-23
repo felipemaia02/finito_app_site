@@ -35,8 +35,11 @@ const baseOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           borderRadius: 16,
-          boxShadow:
-            '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+          background: 'rgba(255, 255, 255, 0.72)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.85)',
+          boxShadow: '0 8px 32px 0 rgba(99, 102, 241, 0.08)',
         },
       },
     },
@@ -64,7 +67,16 @@ const baseOptions: ThemeOptions = {
       },
     },
     MuiDialog: {
-      styleOverrides: { paper: { borderRadius: 20 } },
+      styleOverrides: {
+        paper: {
+          borderRadius: 20,
+          background: 'rgba(255, 255, 255, 0.85)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255, 255, 255, 0.9)',
+          boxShadow: '0 16px 48px 0 rgba(99, 102, 241, 0.12)',
+        },
+      },
     },
     MuiTooltip: {
       styleOverrides: { tooltip: { borderRadius: 8, fontWeight: 500 } },
@@ -96,6 +108,18 @@ export const lightTheme = createTheme({
     text: { primary: '#0f172a', secondary: '#64748b' },
     divider: '#e2e8f0',
   },
+  components: {
+    ...baseOptions.components,
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          background:
+            'linear-gradient(135deg, #f0f4ff 0%, #eaedff 60%, #f8fafc 100%)',
+          backgroundAttachment: 'fixed',
+        },
+      },
+    },
+  },
 });
 
 export const darkTheme = createTheme({
@@ -124,13 +148,24 @@ export const darkTheme = createTheme({
   },
   components: {
     ...baseOptions.components,
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          background:
+            'linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #0c0a1e 100%)',
+          backgroundAttachment: 'fixed',
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
           borderRadius: 16,
-          boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.3)',
-          background: '#1e293b',
-          border: '1px solid #334155',
+          background: 'rgba(30, 41, 59, 0.6)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.07)',
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.4)',
         },
       },
     },
@@ -142,6 +177,18 @@ export const darkTheme = createTheme({
           border: '1px solid #334155',
         },
         elevation1: { boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.3)' },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 20,
+          background: 'rgba(15, 23, 42, 0.85)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          boxShadow: '0 16px 48px 0 rgba(0, 0, 0, 0.5)',
+        },
       },
     },
   },

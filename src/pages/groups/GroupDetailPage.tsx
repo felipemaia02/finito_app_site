@@ -30,7 +30,7 @@ import {
 } from '@mui/icons-material'
 import { useSnackbar } from 'notistack'
 import {
-  useGroupDetail,
+  useGroupFromCache,
   useUpdateGroup,
   useDeleteGroup,
   useAddUserToGroup,
@@ -40,7 +40,7 @@ import { useGroup } from '@/hooks/useGroup'
 import { ROUTES } from '@/constants/routes'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
 import { userService } from '@/services/userService'
-import type { UserResponse } from '@/types/users'
+import type { UserPublicInfo } from '@/types/users'
 
 export default function GroupDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -48,7 +48,7 @@ export default function GroupDetailPage() {
   const { enqueueSnackbar } = useSnackbar()
   const { activeGroupId, setActiveGroup, clearActiveGroup } = useGroup()
 
-  const { data: group, isLoading, error } = useGroupDetail(id ?? null)
+  const { data: group, isLoading, error } = useGroupFromCache(id ?? null)
   const updateMutation = useUpdateGroup(id ?? '')
   const deleteMutation = useDeleteGroup()
   const addUserMutation = useAddUserToGroup(id ?? '')
@@ -59,7 +59,7 @@ export default function GroupDetailPage() {
   const [nameError, setNameError] = useState('')
   const [emailInput, setEmailInput] = useState('')
   const [emailError, setEmailError] = useState('')
-  const [foundUser, setFoundUser] = useState<UserResponse | null>(null)
+  const [foundUser, setFoundUser] = useState<UserPublicInfo | null>(null)
   const [searching, setSearching] = useState(false)
   const [deleteGroupOpen, setDeleteGroupOpen] = useState(false)
   const [removeUserTarget, setRemoveUserTarget] = useState<{ id: string; name: string } | null>(null)
@@ -109,7 +109,7 @@ export default function GroupDetailPage() {
     if (!foundUser) return
     try {
       await addUserMutation.mutateAsync({ user_id: foundUser.id })
-      enqueueSnackbar(`${foundUser.name} adicionado ao grupo!`, { variant: 'success' })
+      enqueueSnackbar(`Usuário adicionado ao grupo!`, { variant: 'success' })
       setEmailInput('')
       setFoundUser(null)
     } catch {
@@ -217,9 +217,7 @@ export default function GroupDetailPage() {
                 {isActive && <Chip label="Ativo" size="small" color="primary" icon={<Check />} />}
               </Box>
             )}
-            <Typography variant="caption" color="text.disabled" sx={{ fontFamily: 'monospace' }}>
-              {group.id}
-            </Typography>
+
           </Box>
         </Box>
 
@@ -291,9 +289,7 @@ export default function GroupDetailPage() {
                   </ListItemAvatar>
                   <ListItemText
                     primary={user.name}
-                    secondary={user.email}
                     primaryTypographyProps={{ fontWeight: 600, variant: 'body2' }}
-                    secondaryTypographyProps={{ variant: 'caption' }}
                   />
                 </ListItem>
               ))}
@@ -318,12 +314,13 @@ export default function GroupDetailPage() {
             Busque o usuário pelo e-mail para adicioná-lo ao grupo.
           </Typography>
 
-          <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
+          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
             <TextField
               label="E-mail do usuário"
               placeholder="usuario@exemplo.com"
               type="email"
               fullWidth
+              size="small"
               value={emailInput}
               onChange={(e) => { setEmailInput(e.target.value); setEmailError(''); setFoundUser(null) }}
               onKeyDown={(e) => e.key === 'Enter' && void handleSearchUser()}
@@ -336,7 +333,8 @@ export default function GroupDetailPage() {
               variant="outlined"
               onClick={() => void handleSearchUser()}
               disabled={searching || !emailInput.trim() || addUserMutation.isPending}
-              sx={{ flexShrink: 0, height: 56 }}
+              size="small"
+              sx={{ flexShrink: 0 }}
               startIcon={searching ? <CircularProgress size={16} /> : <Search />}
             >
               Buscar
@@ -358,10 +356,9 @@ export default function GroupDetailPage() {
               }}
             >
               <Avatar sx={{ width: 40, height: 40, bgcolor: 'success.main', fontSize: 14 }}>
-                {foundUser.name.charAt(0).toUpperCase()}
+                {foundUser.email.charAt(0).toUpperCase()}
               </Avatar>
               <Box sx={{ flex: 1, minWidth: 0 }}>
-                <Typography variant="body2" fontWeight={700} noWrap>{foundUser.name}</Typography>
                 <Typography variant="caption" color="text.secondary" noWrap>{foundUser.email}</Typography>
               </Box>
               <Button

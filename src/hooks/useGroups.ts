@@ -1,38 +1,25 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { groupService } from '@/services/groupService';
 import { GroupCreate, GroupUpdate, AddUserRequest } from '@/types/groups';
-import { useAuth } from '@/hooks/useAuth';
 
 export const GROUP_KEYS = {
   all: ['groups'] as const,
   detail: (id: string) => ['groups', id] as const,
 };
 
-export function useGroups() {
+/** Retorna apenas os grupos do usuário autenticado (via /groups/me). */
+export function useMyGroups() {
   return useQuery({
     queryKey: GROUP_KEYS.all,
-    queryFn: () => groupService.listAll(),
+    queryFn: () => groupService.listMine(),
   });
 }
 
-/** Retorna apenas os grupos dos quais o usuário autenticado é membro. */
-export function useMyGroups() {
-  const { user } = useAuth();
-  const query = useGroups();
-  return {
-    ...query,
-    data: (query.data ?? []).filter((g) =>
-      g.users.some((u) => u.id === user?.id),
-    ),
-  };
-}
-
-export function useGroupDetail(id: string | null) {
-  return useQuery({
-    queryKey: GROUP_KEYS.detail(id ?? ''),
-    queryFn: () => groupService.getById(id!),
-    enabled: !!id,
-  });
+/** Busca um grupo pelo ID a partir do cache de useMyGroups — sem request extra. */
+export function useGroupFromCache(id: string | null) {
+  const { data: groups = [], isLoading, error } = useMyGroups();
+  const group = id ? (groups.find((g) => g.id === id) ?? null) : null;
+  return { data: group, isLoading, error };
 }
 
 export function useCreateGroup() {

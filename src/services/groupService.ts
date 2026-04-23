@@ -12,15 +12,8 @@ export const groupService = {
     return res.data;
   },
 
-  async listAll(skip = 0, limit = 100): Promise<GroupResponse[]> {
-    const res = await api.get<GroupResponse[]>('/groups', {
-      params: { skip, limit },
-    });
-    return res.data;
-  },
-
-  async getById(id: string): Promise<GroupResponse> {
-    const res = await api.get<GroupResponse>(`/groups/${id}`);
+  async listMine(): Promise<GroupResponse[]> {
+    const res = await api.get<GroupResponse[]>('/groups/me');
     return res.data;
   },
 

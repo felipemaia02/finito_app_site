@@ -184,7 +184,12 @@ export function MainLayout() {
           position="sticky"
           elevation={0}
           sx={{
-            backgroundColor: 'background.paper',
+            background: (t) =>
+              t.palette.mode === 'dark'
+                ? 'rgba(15, 23, 42, 0.75)'
+                : 'rgba(255, 255, 255, 0.75)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
             borderBottom: (t) => `1px solid ${t.palette.divider}`,
             color: 'text.primary',
           }}
@@ -223,21 +228,29 @@ export function MainLayout() {
 
         {/* Bottom navigation */}
         <Paper
-          elevation={8}
+          elevation={0}
           sx={{
             position: 'fixed',
             bottom: 0,
             left: 0,
             right: 0,
             zIndex: theme.zIndex.appBar,
+            background: (t) =>
+              t.palette.mode === 'dark'
+                ? 'rgba(15, 23, 42, 0.82)'
+                : 'rgba(255, 255, 255, 0.82)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: 'none',
             borderTop: (t) => `1px solid ${t.palette.divider}`,
+            borderRadius: 0,
           }}
         >
           <BottomNavigation
             value={currentNavIndex === -1 ? false : currentNavIndex}
             onChange={(_, newValue) => navigate(navItems[newValue].path)}
             showLabels
-            sx={{ height: 64 }}
+            sx={{ height: 64, background: 'transparent' }}
           >
             {navItems.map((item) => (
               <BottomNavigationAction
@@ -266,6 +279,12 @@ export function MainLayout() {
             boxSizing: 'border-box',
             border: 'none',
             borderRight: (t) => `1px solid ${t.palette.divider}`,
+            background: (t) =>
+              t.palette.mode === 'dark'
+                ? 'rgba(15, 23, 42, 0.82)'
+                : 'rgba(255, 255, 255, 0.82)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
           },
         }}
       >

@@ -27,8 +27,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem('finito_user')
   }, [])
 
-  const loadUserFromEmail = useCallback(async (email: string) => {
-    const fetched = await userService.getByEmail(email)
+  const loadUserFromEmail = useCallback(async (_email: string) => {
+    const fetched = await userService.getMe()
     setUser(fetched)
     localStorage.setItem('finito_user', JSON.stringify(fetched))
     return fetched

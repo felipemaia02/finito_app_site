@@ -24,3 +24,9 @@ export interface UserResponse {
   created_at: string;
   updated_at: string;
 }
+
+/** Returned by GET /users/email/{email} — minimal public info only. */
+export interface UserPublicInfo {
+  id: string;
+  email: string;
+}

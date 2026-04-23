@@ -11,6 +11,7 @@ export const ROUTES = {
   SETTINGS: '/settings',
   GROUPS: '/groups',
   GROUPS_DETAIL: '/groups/:id',
+  FORBIDDEN: '/403',
   NOT_FOUND: '*',
 } as const;
 

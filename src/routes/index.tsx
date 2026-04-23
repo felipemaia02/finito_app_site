@@ -17,6 +17,7 @@ const SettingsPage = lazy(() => import('@/pages/settings/SettingsPage'))
 const GroupSelectorPage = lazy(() => import('@/pages/groups/GroupsPage'))
 const GroupDetailPage = lazy(() => import('@/pages/groups/GroupDetailPage'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
+const ForbiddenPage = lazy(() => import('@/pages/ForbiddenPage'))
 
 const PageLoader = () => (
   <Box display="flex" alignItems="center" justifyContent="center" minHeight="60vh">
@@ -128,6 +129,14 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: ROUTES.FORBIDDEN,
+    element: (
+      <Suspense fallback={<PageLoader />}>
+        <ForbiddenPage />
+      </Suspense>
+    ),
   },
   {
     path: ROUTES.NOT_FOUND,

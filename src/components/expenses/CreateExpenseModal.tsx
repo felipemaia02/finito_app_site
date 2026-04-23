@@ -33,7 +33,7 @@ export function CreateExpenseModal({ open, onClose, onSuccess }: CreateExpenseMo
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
-        <Typography variant="h6" fontWeight={700}>Nova Despesa</Typography>
+        <Typography variant="h6" component="span" fontWeight={700}>Nova Despesa</Typography>
         <IconButton size="small" onClick={onClose}>
           <Close fontSize="small" />
         </IconButton>

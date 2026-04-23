@@ -65,14 +65,38 @@ function CurrencyInput({ value, onChange, error, helperText }: CurrencyInputProp
     }
   }
 
+  // Mobile virtual keyboards don't reliably fire keydown events.
+  // beforeinput is cancelable and works on modern mobile browsers.
+  const handleBeforeInput = (e: React.FormEvent<HTMLInputElement>) => {
+    const ie = e.nativeEvent as InputEvent
+    e.preventDefault()
+
+    if (ie.inputType === 'deleteContentBackward' || ie.inputType === 'deleteWordBackward') {
+      const next = Math.floor(cents / 10)
+      setCents(next)
+      isInternal.current = true
+      onChange(next / 100)
+    } else if (ie.data && /^\d+$/.test(ie.data)) {
+      let next = cents
+      for (const ch of ie.data) {
+        next = next * 10 + parseInt(ch, 10)
+        if (next > 99_999_999) return
+      }
+      setCents(next)
+      isInternal.current = true
+      onChange(next / 100)
+    }
+  }
+
   return (
     <Box>
       <TextField
         label="Valor"
         fullWidth
         value={display}
-        onChange={() => undefined} // fully controlled via keydown
+        onChange={() => undefined} // fully controlled via keydown / beforeinput
         onKeyDown={handleKeyDown}
+        onBeforeInput={handleBeforeInput}
         inputMode="numeric"
         InputProps={{
           startAdornment: <InputAdornment position="start">R$</InputAdornment>,

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { groupService } from '@/services/groupService';
 import { GroupCreate, GroupUpdate, AddUserRequest } from '@/types/groups';
+import { useAuth } from '@/hooks/useAuth';
 
 export const GROUP_KEYS = {
   all: ['groups'] as const,
@@ -12,6 +13,18 @@ export function useGroups() {
     queryKey: GROUP_KEYS.all,
     queryFn: () => groupService.listAll(),
   });
+}
+
+/** Retorna apenas os grupos dos quais o usuário autenticado é membro. */
+export function useMyGroups() {
+  const { user } = useAuth();
+  const query = useGroups();
+  return {
+    ...query,
+    data: (query.data ?? []).filter((g) =>
+      g.users.some((u) => u.id === user?.id),
+    ),
+  };
 }
 
 export function useGroupDetail(id: string | null) {

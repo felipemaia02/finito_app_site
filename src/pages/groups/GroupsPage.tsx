@@ -20,7 +20,7 @@ import {
 } from '@mui/material'
 import { Add, Check, Delete, Edit, Group as GroupIcon, PeopleAlt } from '@mui/icons-material'
 import { useSnackbar } from 'notistack'
-import { useGroups, useCreateGroup, useDeleteGroup } from '@/hooks/useGroups'
+import { useMyGroups, useCreateGroup, useDeleteGroup } from '@/hooks/useGroups'
 import { useGroup } from '@/hooks/useGroup'
 import { buildGroupDetailPath } from '@/constants/routes'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
@@ -31,7 +31,7 @@ export default function GroupsPage() {
   const { enqueueSnackbar } = useSnackbar()
   const { activeGroupId, setActiveGroup } = useGroup()
 
-  const { data: groups = [], isLoading, error } = useGroups()
+  const { data: groups = [], isLoading, error } = useMyGroups()
   const createMutation = useCreateGroup()
   const deleteMutation = useDeleteGroup()
 

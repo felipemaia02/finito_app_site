@@ -36,7 +36,7 @@ import {
 import { ROUTES } from '@/constants/routes'
 import { useAuth } from '@/hooks/useAuth'
 import { useGroup } from '@/hooks/useGroup'
-import { useGroups } from '@/hooks/useGroups'
+import { useMyGroups } from '@/hooks/useGroups'
 import { useThemeContext } from '@/context/ThemeContext'
 
 const DRAWER_WIDTH = 260
@@ -52,7 +52,7 @@ export function MainLayout() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const { user, logout } = useAuth()
   const { activeGroupId } = useGroup()
-  const { data: allGroups = [] } = useGroups()
+  const { data: allGroups = [] } = useMyGroups()
   const activeGroupName = allGroups.find((g) => g.id === activeGroupId)?.group_name
   const { mode, toggleMode } = useThemeContext()
   const navigate = useNavigate()

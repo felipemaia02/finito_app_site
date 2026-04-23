@@ -24,7 +24,7 @@ import {
 } from '@mui/icons-material'
 import { useExpenses, useDeleteExpense } from '@/hooks/useExpenses'
 import { useGroup } from '@/hooks/useGroup'
-import { useGroups } from '@/hooks/useGroups'
+import { useMyGroups } from '@/hooks/useGroups'
 import { computeDashboardSummaryFromExpenses } from '@/utils/analytics'
 import { formatCurrency } from '@/utils/currency'
 import { SummaryCard } from '@/components/dashboard/SummaryCard'
@@ -45,7 +45,7 @@ export default function DashboardPage() {
   const navigate = useNavigate()
   const { enqueueSnackbar } = useSnackbar()
   const { activeGroupId, setActiveGroup } = useGroup()
-  const { data: allGroups = [] } = useGroups()
+  const { data: allGroups = [] } = useMyGroups()
   const [deleteTarget, setDeleteTarget] = useState<ExpenseResponse | null>(null)
   const [periodFilter, setPeriodFilter] = useState<string>(CURRENT_MONTH)
   const [createOpen, setCreateOpen] = useState(false)

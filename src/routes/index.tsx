@@ -8,6 +8,7 @@ import { Box, CircularProgress } from '@mui/material'
 
 const LoginPage = lazy(() => import('@/pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('@/pages/auth/RegisterPage'))
+const VerifyEmailPage = lazy(() => import('@/pages/auth/VerifyEmailPage'))
 const DashboardPage = lazy(() => import('@/pages/dashboard/DashboardPage'))
 const ExpensesListPage = lazy(() => import('@/pages/expenses/ExpensesListPage'))
 const EditExpensePage = lazy(() => import('@/pages/expenses/EditExpensePage'))
@@ -49,6 +50,14 @@ export const router = createBrowserRouter([
             element: (
               <Suspense fallback={<PageLoader />}>
                 <RegisterPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: ROUTES.VERIFY_EMAIL,
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <VerifyEmailPage />
               </Suspense>
             ),
           },

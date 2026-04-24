@@ -1,4 +1,5 @@
 import api from './api';
+import type { RegisterResponse } from '@/types/auth';
 import type {
   UserCreate,
   UserUpdate,
@@ -7,8 +8,10 @@ import type {
 } from '@/types/users';
 
 export const userService = {
-  register(data: UserCreate): Promise<UserResponse> {
-    return api.post<UserResponse>('/users/register', data).then((r) => r.data);
+  register(data: UserCreate): Promise<RegisterResponse> {
+    return api
+      .post<RegisterResponse>('/users/register', data)
+      .then((r) => r.data);
   },
 
   getById(userId: string): Promise<UserResponse> {

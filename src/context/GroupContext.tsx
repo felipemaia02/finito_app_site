@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react'
 
-const ACTIVE_GROUP_KEY = 'finito_active_group'
+export const ACTIVE_GROUP_KEY = 'finito_active_group'
 
 interface GroupContextValue {
   activeGroupId: string | null

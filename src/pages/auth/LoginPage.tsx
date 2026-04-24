@@ -18,6 +18,7 @@ import {
 } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useAuth } from '@/hooks/useAuth'
+import { authService } from '@/services/authService'
 import { ROUTES } from '@/constants/routes'
 
 const schema = z.object({
@@ -44,8 +45,21 @@ export default function LoginPage() {
     try {
       await login(values)
       navigate(ROUTES.DASHBOARD, { replace: true })
-    } catch {
-      setError('E-mail ou senha incorretos. Verifique suas credenciais.')
+    } catch (err: unknown) {
+      const axErr = err as { response?: { status?: number; data?: { detail?: string; verification_token?: string } } }
+      if (axErr.response?.status === 403) {
+        try {
+          const { verification_token } = await authService.requestVerification(values.email)
+          navigate(ROUTES.VERIFY_EMAIL, {
+            state: { verificationToken: verification_token },
+            replace: true,
+          })
+        } catch {
+          setError('Você ainda não verificou seu e-mail. Verifique sua caixa de entrada ou tente se cadastrar novamente.')
+        }
+      } else {
+        setError('E-mail ou senha incorretos. Verifique suas credenciais.')
+      }
     }
   }
 

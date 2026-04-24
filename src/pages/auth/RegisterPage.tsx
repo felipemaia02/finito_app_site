@@ -18,7 +18,6 @@ import {
 } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { userService } from '@/services/userService'
-import { useAuth } from '@/hooks/useAuth'
 import { ROUTES } from '@/constants/routes'
 
 const schema = z
@@ -37,7 +36,6 @@ const schema = z
 type FormValues = z.infer<typeof schema>
 
 export default function RegisterPage() {
-  const { login } = useAuth()
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -51,14 +49,13 @@ export default function RegisterPage() {
   const onSubmit = async (values: FormValues) => {
     setError(null)
     try {
-      await userService.register({
+      const { verification_token } = await userService.register({
         name: values.name,
         email: values.email,
         password: values.password,
         date_birth: values.date_birth,
       })
-      await login({ email: values.email, password: values.password })
-      navigate(ROUTES.DASHBOARD, { replace: true })
+      navigate(ROUTES.VERIFY_EMAIL, { state: { verificationToken: verification_token }, replace: true })
     } catch (err: unknown) {
       const axErr = err as { response?: { data?: { detail?: string } } }
       setError(axErr.response?.data?.detail ?? 'Erro ao criar conta. Tente novamente.')

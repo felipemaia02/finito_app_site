@@ -8,8 +8,13 @@ import {
 
 export const groupService = {
   async create(data: GroupCreate): Promise<GroupResponse> {
-    const res = await api.post<GroupResponse>('/groups', data);
-    return res.data;
+    await api.post('/groups', data);
+    // POST /groups returns StandardResponse (no id), so fetch the list and
+    // return the freshly created group matched by name.
+    const groups = await api.get<GroupResponse[]>('/groups/me');
+    const created = groups.data.find((g) => g.group_name === data.group_name);
+    if (!created) throw new Error('Grupo criado mas não encontrado na listagem.');
+    return created;
   },
 
   async listMine(): Promise<GroupResponse[]> {

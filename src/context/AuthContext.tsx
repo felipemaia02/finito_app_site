@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import { authService } from '@/services/authService'
 import { userService } from '@/services/userService'
 import { clearTokens, getAccessToken, getRefreshToken, saveTokens, STORAGE_KEYS } from '@/services/api'
+import { ACTIVE_GROUP_KEY } from '@/context/GroupContext'
 import { isTokenExpired } from '@/utils/dates'
 import type { UserResponse } from '@/types/users'
 import type { LoginRequest } from '@/types/auth'
@@ -25,6 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearTokens()
     setUser(null)
     localStorage.removeItem('finito_user')
+    localStorage.removeItem(ACTIVE_GROUP_KEY)
   }, [])
 
   const loadUserFromEmail = useCallback(async (_email: string) => {

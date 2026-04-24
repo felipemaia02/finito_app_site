@@ -25,6 +25,11 @@ export interface TokenValidationResponse {
   expires_at: string | null;
 }
 
+export interface RegisterResponse {
+  message: string;
+  verification_token: string;
+}
+
 export interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
